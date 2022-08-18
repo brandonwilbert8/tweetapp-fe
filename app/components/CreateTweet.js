@@ -22,7 +22,7 @@ function CreateTweet(props) {
       });
       // Redirect to the new tweet page
       appDispatch({ type: "flashMessage", value: "Congratulations, you have successfully added a new tweet." });
-      navigate(`/profile/{username}`);
+      navigate(`/profile/${username}`);
       console.log("New tweet successfully added");
     } catch (e) {
       console.log("There was a problem");

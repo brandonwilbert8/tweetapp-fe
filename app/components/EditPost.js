@@ -6,6 +6,7 @@ import { useParams, Link } from "react-router-dom";
 import LoadingDotsIcon from "./LoadingDotsIcon";
 import { useImmerReducer } from "use-immer";
 import DispatchContext from "../DispatchContext";
+import StateContext from "../StateContext";
 import { useNavigate } from "react-router-dom";
 import NotFound from "./NotFound";
 
@@ -64,9 +65,11 @@ function EditPost() {
 
   const [state, dispatch] = useImmerReducer(ourReducer, originalState);
   const appDispatch = useContext(DispatchContext);
+  const appState = useContext(StateContext);
   const navigate = useNavigate();
 
-  const { username, tweetId } = useParams();
+  let { tweetId } = useParams();
+  let { username } = useParams();
   //const [isLoading, setIsLoading] = useState(true);
   const [post, setPost] = useState();
 
@@ -78,12 +81,17 @@ function EditPost() {
         const response = await Axios.get(`http://localhost:8081/api/v1.0/tweets/${username}/${tweetId}`, { cancelToken: ourRequest.token });
         if (response.data) {
           dispatch({ type: "fetchComplete", value: response.data });
+          if (appState.user.username !== localStorage.getItem("tweetappUsername")) {
+            appDispatch({ type: "flashMessage", value: "You do not have permission to edit that post." });
+            // redirect to homepage
+            navigate("/");
+          }
         } else {
           dispatch({ type: "notFound" });
         }
         console.log(response.data);
       } catch (e) {
-        navigate(`*`);
+        //navigate(`*`);
         console.log("There was a problem / request was cancelled");
       }
     }

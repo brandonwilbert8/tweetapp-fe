@@ -57,7 +57,7 @@ function ViewSinglePost() {
           // 1. display a flash message
           appDispatch({ type: "flashMessage", value: "Post was successfully deleted" });
           // 2. redirect back to the profie page
-          navigate(`/profile/${username}`);
+          navigate(`/profile/${localStorage.getItem("tweetappUsername")}`);
         }
       } catch (e) {
         console.log("There was a problem, could not delete.");
