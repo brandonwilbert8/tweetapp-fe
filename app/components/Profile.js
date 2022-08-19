@@ -24,7 +24,7 @@ function Profile() {
         console.log("There was a problem");
       }
     }
-    fetchPosts();
+    fetchPosts(); // If the function is called here, it will produce 2x GET requests on console
   }, []);
 
   return (

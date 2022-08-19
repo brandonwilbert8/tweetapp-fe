@@ -1,5 +1,6 @@
-body {
-  font-family: "Public Sans", sans-serif;
+body,
+header {
+  font-family: "Helvetica", sans-serif;
 }
 
 .header-bar {
