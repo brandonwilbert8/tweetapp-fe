@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Page from "./Page";
 import Axios from "axios";
+import DispatchContext from "../DispatchContext";
+import StateContext from "../StateContext";
+import { useNavigate } from "react-router-dom";
 
 function HomeGuest() {
   const [firstName, setFirstName] = useState();
@@ -9,6 +12,10 @@ function HomeGuest() {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const [contactNumber, setContactNumber] = useState();
+
+  const appDispatch = useContext(DispatchContext);
+  const appState = useContext(StateContext);
+  const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -21,7 +28,11 @@ function HomeGuest() {
         password: password,
         contactNumber: contactNumber,
       });
+      localStorage.setItem("tweetappUsername", username);
       console.log("User was successfully registered");
+      appDispatch({ type: "flashMessage", value: "Congratulations, you have successfully created a new user." });
+      appDispatch({ type: "login", value: true });
+      navigate(`/profile/${username}`);
     } catch (error) {
       console.log("There was an error");
     }

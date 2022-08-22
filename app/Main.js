@@ -22,6 +22,7 @@ import EditPost from "./components/EditPost";
 import NotFound from "./components/NotFound";
 import AllUsers from "./components/AllUsers";
 import DiscoverTweets from "./components/DiscoverTweets";
+import ReplyPost from "./components/ReplyPost";
 
 function Main() {
   const initialState = {
@@ -75,6 +76,7 @@ function Main() {
             <Route path="/profile/:username/*" element={<Profile />} />
             <Route path="/create-post" element={<CreateTweet />} />
             <Route path="/post/:tweetId/edit" element={<EditPost />} />
+            <Route path="/post/:tweetId/reply" element={<ReplyPost />} />
             <Route path="/post/:tweetId" element={<ViewSinglePost />} />
             <Route path="/about-us" element={<About />} />
             <Route path="/terms" element={<Terms />} />

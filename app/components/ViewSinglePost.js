@@ -16,6 +16,7 @@ function ViewSinglePost() {
   const navigate = useNavigate();
   const appState = useContext(StateContext);
   const appDispatch = useContext(DispatchContext);
+  const currentUser = localStorage.getItem("tweetappUsername");
 
   useEffect(() => {
     const ourRequest = Axios.CancelToken.source();
@@ -48,6 +49,13 @@ function ViewSinglePost() {
       </Page>
     );
 
+  function isOwner() {
+    if (appState.loggedIn) {
+      return currentUser === post.username;
+    }
+    return false;
+  }
+
   async function deleteHandler() {
     const areYouSure = window.confirm("Do you really want to delete this tweet?");
     if (areYouSure) {
@@ -69,16 +77,29 @@ function ViewSinglePost() {
     <Page title={post.tweetId}>
       <div className="d-flex justify-content-between">
         <h2>Tweet ID: {post.tweetId}</h2>
-        <span className="pt-2">
-          <Link to={`/post/${post.tweetId}/edit`} data-tip="Update Tweet" data-for="edit" className="text-primary mr-2">
-            <i className="fas fa-edit"></i>
-          </Link>
-          <ReactTooltip id="edit" className="custom-tooltip" />{" "}
-          <a onClick={deleteHandler} data-tip="Delete Tweet" data-for="delete" className="delete-post-button text-danger">
-            <i className="fas fa-trash"></i>
-          </a>
-          <ReactTooltip id="delete" className="custom-tooltip" />
-        </span>
+        {isOwner() ? (
+          <span className="pt-2">
+            <Link to={`/post/${post.tweetId}/edit`} data-tip="Update Tweet" data-for="edit" className="text-primary mr-2">
+              <i className="fas fa-edit"></i>
+            </Link>
+            <ReactTooltip id="edit" className="custom-tooltip" />{" "}
+            <a onClick={deleteHandler} data-tip="Delete Tweet" data-for="delete" className="delete-post-button text-danger">
+              <i className="fas fa-trash"></i>
+            </a>
+            <ReactTooltip id="delete" className="custom-tooltip" />
+          </span>
+        ) : (
+          <span className="pt-2">
+            <Link to={`/post/${post.tweetId}/edit`} data-tip="Like Tweet" data-for="like" className="text-primary mr-2">
+              <i className="fas fa-thumbs-up"></i>
+            </Link>
+            <ReactTooltip id="edit" className="custom-tooltip" />{" "}
+            <Link to={`/post/${post.tweetId}/reply`} data-tip="Reply to this Tweet" data-for="reply" className="text-success">
+              <i className="fas fa-reply"></i>
+            </Link>
+            <ReactTooltip id="delete" className="custom-tooltip" />
+          </span>
+        )}
       </div>
 
       <p className="text-muted small mb-4">

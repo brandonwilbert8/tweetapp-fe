@@ -8,6 +8,7 @@ import StateContext from "../StateContext";
 function CreateTweet(props) {
   const username = localStorage.getItem("tweetappUsername");
   const [tweet, setTweet] = useState();
+  //const [tweetId, setTweetId] = useState();
   const navigate = useNavigate();
   const appDispatch = useContext(DispatchContext);
   let x = Math.floor(Math.random() * 200 + 1);

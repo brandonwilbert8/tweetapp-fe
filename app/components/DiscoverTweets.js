@@ -42,7 +42,7 @@ function DiscoverTweets(props) {
           const dateFormatted = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
 
           return (
-            <Link key={tweet.username} to={`*`} className="list-group-item list-group-item-action">
+            <Link key={tweet.username} to={`/post/${tweet.tweetId}`} className="list-group-item list-group-item-action">
               <h4>
                 <strong>{tweet.tweet} </strong>{" "}
               </h4>
