@@ -35,7 +35,7 @@ function Profile() {
 
       <div className="profile-nav nav nav-tabs pt-2 mb-4">
         <Link to={`/profile/${username}`} className="active nav-item nav-link">
-          Tweets
+          Tweets by <strong>{username}</strong>
         </Link>
       </div>
       <ProfilePosts />

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import LoadingDotsIcon from "./LoadingDotsIcon";
+import ReactTooltip from "react-tooltip";
 
 function ProfilePosts(props) {
   //const username = localStorage.getItem("tweetappUsername");
@@ -36,7 +37,18 @@ function ProfilePosts(props) {
 
         return (
           <Link key={post.tweetId} to={`/post/${post.tweetId}`} className="list-group-item list-group-item-action">
-            <strong>{post.tweet}</strong> <span className="text-muted small"></span>
+            <strong>{post.tweet}</strong>
+            <span className="text-muted small"></span>
+            {/* <div className="d-flex justify-content-end ">
+              <Link to={`/post/${post.tweetId}/edit`} data-tip="Like Tweet" data-for="like" className="text-primary mr-2">
+                <i className="far fa-thumbs-up"></i>
+              </Link>
+              <ReactTooltip id="like" className="custom-tooltip" />{" "}
+              <Link to={`/post/${post.tweetId}/reply`} data-tip="Reply to this Tweet" data-for="reply" className="text-success mr-2">
+                <i className="fas fa-reply"></i>
+              </Link>
+              <ReactTooltip id="reply" className="custom-tooltip" />
+            </div> */}
           </Link>
         );
       })}

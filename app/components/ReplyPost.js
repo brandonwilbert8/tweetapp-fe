@@ -20,6 +20,7 @@ function ReplyPost() {
   const appState = useContext(StateContext);
   const appDispatch = useContext(DispatchContext);
   const currentUser = localStorage.getItem("tweetappUsername");
+  let replyTweetId = Math.floor(Math.random() * 10000 + 1);
 
   const originalState = {
     tweet: {
@@ -92,11 +93,16 @@ function ReplyPost() {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      const response = await Axios.post("http://localhost:8081/api/v1.0/tweets/${username}/reply/${tweetId}", {});
+      const response = await Axios.post(`http://localhost:8081/api/v1.0/tweets/${username}/reply/${tweetId}`, {
+        tweetId: tweetId,
+        replyTweetId: replyTweetId,
+        replyTweet: reply,
+        username: currentUser,
+      });
       // Redirect to the new tweet page
-      appDispatch({ type: "flashMessage", value: "Congratulations, you have successfully added a new tweet." });
-      navigate(`/profile/${username}`);
-      console.log("New tweet successfully added");
+      appDispatch({ type: "flashMessage", value: "Congratulations, you have successfully posted a reply!" });
+      navigate(`/post/${tweetId}`);
+      console.log("New reply successfully added");
     } catch (e) {
       console.log("There was a problem");
     }
@@ -132,11 +138,11 @@ function ReplyPost() {
           <label htmlFor="post-body" className="text-muted mb-1 d-block">
             <small>Reply</small>
           </label>
-          <textarea onChange={(e) => setReply(e.target.value)} name="tweet" id="post-body" className="body-content tall-textarea form-control" type="text" />
+          <textarea onChange={(e) => setReply(e.target.value)} name="reply" id="post-body" className="body-content tall-textarea form-control" type="text" />
           {state.tweet.hasErrors && <div className="alert alert-danger small liveValidateMessage">{state.tweet.message}</div>}
         </div>
         <button className="btn btn-primary" disabled={state.isSaving}>
-          Save Reply
+          Post Reply
         </button>
       </form>
     </Page>

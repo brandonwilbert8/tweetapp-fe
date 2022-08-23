@@ -9,7 +9,7 @@ import NotFound from "./NotFound";
 import StateContext from "../StateContext";
 import DispatchContext from "../DispatchContext";
 
-function ViewSinglePost() {
+function DisplayReplies() {
   const { username, tweetId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [post, setPost] = useState();
@@ -110,6 +110,29 @@ function ViewSinglePost() {
     }
   }
 
+  // Rendering objects from replies - Getting replies from 1 tweet
+  function renderingReplies() {
+    const renderedReplies = post.replies.map((element) => {
+      return (
+        <tr>
+          <td
+            style={{
+              fontWeight: "bold",
+              color: "red",
+            }}
+          >
+            @{element.username}
+          </td>
+          <td style={{
+              fontStyle: "italic",
+              color: "blue",
+            }}>{element.replyTweet}</td>
+        </tr>
+      );
+    });
+    return <div>{renderedReplies}</div>;
+  }
+
   return (
     <Page title={post.tweetId}>
       <div className="d-flex justify-content-between">
@@ -158,21 +181,17 @@ function ViewSinglePost() {
         Posted by <Link to={`/profile/${post.username}/`}>{post.username}</Link>
       </p>
 
-      {post.like ? <p className="text-muted small">Likes:{post.like.noOfLikes}</p> : <p className="text-muted small">Likes: 0</p>}
+      {/*{post.like ? <p className="text-muted small">Likes:{post.like.noOfLikes}</p> : <p className="text-muted small">Likes: 0</p>} */}
 
-      {post.replies ? (
-        <Link to={`/post/${post.tweetId}/displayreplies`} className="text-muted small">
-          Replies: {post.replies.length}
-        </Link>
-      ) : (
-        <p className="text-muted small">Replies: 0</p>
-      )}
+      {/* {post.replies ? <p className="text-muted small">Replies: {post.replies.length}</p> : <p className="text-muted small">Replies: 0</p>} */}
 
       <div className="body-content">
         <ReactMarkdown children={post.tweet} allowedElements={["p", "br", "strong", "em", "h1", "h2", "h3", "h4", "h5", "h6", "ul", "ol", "li"]} />
       </div>
+
+      {renderingReplies()}
     </Page>
   );
 }
 
-export default ViewSinglePost;
+export default DisplayReplies;
