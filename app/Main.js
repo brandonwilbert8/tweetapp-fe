@@ -3,7 +3,7 @@ import React, { useState, useReducer, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import { useImmerReducer } from "use-immer";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import { CSSTransition } from "react-transition-group";
 import StateContext from "./StateContext";
 import DispatchContext from "./DispatchContext";
 
@@ -17,6 +17,7 @@ import Home from "./components/Home";
 import CreateTweet from "./components/CreateTweet";
 import ViewSinglePost from "./components/ViewSinglePost";
 import FlashMessages from "./components/FlashMessages";
+import FailedFlashMessages from "./components/FailedFlashMessages";
 import Profile from "./components/Profile";
 import EditPost from "./components/EditPost";
 import NotFound from "./components/NotFound";
@@ -24,16 +25,20 @@ import AllUsers from "./components/AllUsers";
 import DiscoverTweets from "./components/DiscoverTweets";
 import ReplyPost from "./components/ReplyPost";
 import DisplayReplies from "./components/DisplayReplies";
+import AfterRegister from "./components/AfterRegister";
+import Search from "./components/Search";
 
 function Main() {
   const initialState = {
     loggedIn: Boolean(localStorage.getItem("tweetappUsername")),
     flashMessages: [],
+    failedFlashMessages: [],
     /*
     user: {
       username: localStorage.getItem("tweetappUsername"),
       password: localStorage.getItem("tweetappPassword"),
     },*/
+    isSearchOpen: false,
   };
 
   function ourReducer(draft, action) {
@@ -48,6 +53,15 @@ function Main() {
         return;
       case "flashMessage":
         draft.flashMessages.push(action.value);
+        return;
+      case "failedFlashMessage":
+        draft.failedFlashMessages.push(action.value);
+        return;
+      case "openSearch":
+        draft.isSearchOpen = true;
+        return;
+      case "closeSearch":
+        draft.isSearchOpen = false;
         return;
     }
   }
@@ -71,6 +85,7 @@ function Main() {
       <DispatchContext.Provider value={dispatch}>
         <BrowserRouter>
           <FlashMessages messages={state.flashMessages} />
+          <FailedFlashMessages messages={state.failedFlashMessages} />
           <Header loggedIn={state.loggedIn} />
           <Routes>
             <Route path="/" element={state.loggedIn ? <Home /> : <HomeGuest />} />
@@ -85,7 +100,11 @@ function Main() {
             <Route path="*" element={<NotFound />} />
             <Route path="/allusers" element={<AllUsers />} />
             <Route path="/discovertweets" element={<DiscoverTweets />} />
+            <Route path="/afterregister" element={state.loggedIn ? <HomeGuest /> : <AfterRegister />} />
           </Routes>
+          <CSSTransition timeout={330} in={state.isSearchOpen} classNames="search-overlay" unmountOnExit>
+            <Search />
+          </CSSTransition>
           <Footer />
         </BrowserRouter>
       </DispatchContext.Provider>

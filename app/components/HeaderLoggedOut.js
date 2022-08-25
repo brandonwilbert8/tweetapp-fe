@@ -14,10 +14,19 @@ function HeaderLoggedOut(props) {
     try {
       const response = await Axios.post("http://localhost:8081/api/v1.0/tweets/login", { username, password });
       if (response.data) {
-        localStorage.setItem("tweetappUsername", username);
-        localStorage.setItem("tweetappPassword", password);
-        appDispatch({ type: "login" });
-        navigate(`/profile/${username}`);
+        console.log("Authentication: " + response.data.status);
+        console.log(response.data.message);
+        if (response.data.status === true) {
+          localStorage.setItem("tweetappUsername", username);
+          localStorage.setItem("tweetappPassword", password);
+          appDispatch({ type: "login" });
+          appDispatch({ type: "flashMessage", value: "Welcome to TweetApp!" });
+          navigate(`/profile/${username}`);
+        } else {
+          appDispatch({ type: "logout" });
+          appDispatch({ type: "failedFlashMessage", value: "Wrong credentials, please check again." });
+          navigate(`/`);
+        }
       } else {
         console.log("Incorrect username / password.");
       }

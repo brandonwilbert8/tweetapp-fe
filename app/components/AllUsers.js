@@ -1,13 +1,16 @@
 import Axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import LoadingDotsIcon from "./LoadingDotsIcon";
 import Page from "./Page";
+import ReactTooltip from "react-tooltip";
+import DispatchContext from "../DispatchContext";
 
 function AllUsers(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [users, setUsers] = useState([]);
+  const appDispatch = useContext(DispatchContext);
   const username = props.username;
 
   useEffect(() => {
@@ -28,8 +31,20 @@ function AllUsers(props) {
     return <LoadingDotsIcon />;
   }
 
+  function handleSearchIcon(e) {
+    e.preventDefault();
+    appDispatch({ type: "openSearch" });
+  }
+
   return (
     <Page title="All Users">
+      {/* Search Button below: */}
+      <div className="d-flex justify-content-sm-end ">
+        <div onClick={handleSearchIcon} data-tip="Search Available Users" data-for="search" className="text-primary mr-2">
+          <button className="fas fa-search fa-2x"></button>
+        </div>
+        <ReactTooltip place="bottom" id="search" className="custom-tooltip" />{" "}
+      </div>
       <div className="profile-nav nav nav-tabs pt-1 mb-4">
         <Link to={`/allusers`} className="active nav-item active">
           <h3>Users</h3>

@@ -28,11 +28,12 @@ function HomeGuest() {
         password: password,
         contactNumber: contactNumber,
       });
-      localStorage.setItem("tweetappUsername", username);
+      //localStorage.setItem("tweetappUsername", username);
       console.log("User was successfully registered");
       appDispatch({ type: "flashMessage", value: "Congratulations, you have successfully created a new user." });
-      appDispatch({ type: "login", value: true });
-      navigate(`/profile/${username}`);
+      appDispatch({ type: "logout", value: true });
+      appState.loggedIn = false;
+      navigate(`/afterregister`);
     } catch (error) {
       console.log("There was an error");
     }
