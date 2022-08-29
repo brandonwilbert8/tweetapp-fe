@@ -123,10 +123,30 @@ function DisplayReplies() {
           >
             @{element.username}
           </td>
-          <td style={{
+          <td
+            style={{
               fontStyle: "italic",
               color: "blue",
-            }}>{element.replyTweet}</td>
+            }}
+          >
+            {element.replyTweet}
+          </td>
+          <td
+            style={{
+              fontStyle: "italic",
+              color: "green",
+            }}
+          >
+            {element.postedReplyDate} - 
+          </td>
+          <td
+            style={{
+              fontStyle: "italic",
+              color: "green",
+            }}
+          >
+            {element.postedReplyTime}
+          </td>
         </tr>
       );
     });
@@ -187,6 +207,10 @@ function DisplayReplies() {
 
       <div className="body-content">
         <ReactMarkdown children={post.tweet} allowedElements={["p", "br", "strong", "em", "h1", "h2", "h3", "h4", "h5", "h6", "ul", "ol", "li"]} />
+      </div>
+
+      <div className = "text-muted small">
+        Posted on: {post.postedTweetDate} - {post.postedTweetTime}
       </div>
 
       {renderingReplies()}

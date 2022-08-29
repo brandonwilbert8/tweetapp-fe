@@ -21,7 +21,11 @@ function ReplyPost() {
   const appState = useContext(StateContext);
   const appDispatch = useContext(DispatchContext);
   const currentUser = localStorage.getItem("tweetappUsername");
+
   let replyTweetId = Math.floor(Math.random() * 10000 + 1);
+  var showDate = new Date();
+  const postedDate = showDate.getDate() + "/" + showDate.getMonth() + "/" + showDate.getFullYear();
+  const postedTime = showDate.getHours() + ":" + showDate.getMinutes();
 
   const originalState = {
     reply: {
@@ -141,6 +145,8 @@ function ReplyPost() {
             replyTweetId: replyTweetId,
             replyTweet: state.reply.value,
             username: currentUser,
+            postedReplyDate: postedDate,
+            postedReplyTime: postedTime
           });
           // Redirect to the new tweet page
           appDispatch({ type: "flashMessage", value: "Congratulations, you have successfully posted a reply!" });

@@ -84,7 +84,8 @@ function DiscoverTweets(props) {
               <h5>
                 <strong>{tweet.tweet}</strong>
               </h5>
-              <span className="text-muted small">@{tweet.username}</span>
+              <span className="text-muted large">@{tweet.username}</span>
+              <span className="text-info small d-flex justify-content-end font-weight-light">{tweet.postedTweetDate} - {tweet.postedTweetTime}</span>
             </Link>
           );
         })}

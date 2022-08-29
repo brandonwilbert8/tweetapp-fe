@@ -177,6 +177,9 @@ function ViewSinglePost() {
       ) : (
         <p className="text-muted small">Replies: 0</p>
       )}
+      <div className = "text-muted small">
+        Posted on: {post.postedTweetDate} - {post.postedTweetTime}
+      </div>
       <ReactTooltip id="view-reply" className="custom-tooltip" />{" "}
       <div className="body-content">
         <ReactMarkdown children={post.tweet} allowedElements={["p", "br", "strong", "em", "h1", "h2", "h3", "h4", "h5", "h6", "ul", "ol", "li"]} />

@@ -13,7 +13,11 @@ function CreateTweet(props) {
   const navigate = useNavigate();
   const appDispatch = useContext(DispatchContext);
   const appState = useContext(StateContext);
-  let x = Math.floor(Math.random() * 200 + 1);
+
+  let x = Math.floor(Math.random() * 20000 + 1);
+  var showDate = new Date();
+  const postedDate = showDate.getDate() + "/" + showDate.getMonth() + "/" + showDate.getFullYear();
+  const postedTime = showDate.getHours() + ":" + showDate.getMinutes();
 
   const initialState = {
     tweet: {
@@ -74,6 +78,8 @@ function CreateTweet(props) {
               tweetId: x,
               tweet: state.tweet.value,
               username: username,
+              postedTweetDate: postedDate,
+              postedTweetTime: postedTime,
             },
             { cancelToken: ourRequest.token }
           );
