@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import Axios from "axios";
 import DispatchContext from "../DispatchContext";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function HeaderLoggedOut(props) {
   const appDispatch = useContext(DispatchContext);
@@ -47,6 +48,9 @@ function HeaderLoggedOut(props) {
         <div className="col-md-auto">
           <button className="btn btn-success btn-sm">Sign In</button>
         </div>
+        <Link to={`/forgotpassword`} className="">
+          <button className="btn btn-danger btn-sm">Forgot Password</button>
+        </Link>
       </div>
     </form>
   );
