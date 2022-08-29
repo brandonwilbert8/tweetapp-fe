@@ -9,7 +9,7 @@ import NotFound from "./NotFound";
 import StateContext from "../StateContext";
 import DispatchContext from "../DispatchContext";
 
-function DisplayReplies() {
+function DisplayLikes() {
   const { username, tweetId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [post, setPost] = useState();
@@ -111,26 +111,14 @@ function DisplayReplies() {
   }
 
   // Rendering objects from replies - Getting replies from 1 tweet
-  function renderingReplies() {
-    const renderedReplies = post.replies.map((element) => {
-      return (
-        <tr>
-          <td
-            style={{
-              fontWeight: "bold",
-              color: "red",
-            }}
-          >
-            @{element.username}
-          </td>
-          <td style={{
-              fontStyle: "italic",
-              color: "blue",
-            }}>{element.replyTweet}</td>
-        </tr>
-      );
+  function renderingLikes() {
+    return Object.keys(post.like.details).map((element) => {
+        return (
+            <div>
+               {post.like.details[element]}
+            </div>
+        )
     });
-    return <div>{renderedReplies}</div>;
   }
 
   return (
@@ -189,8 +177,18 @@ function DisplayReplies() {
         <ReactMarkdown children={post.tweet} allowedElements={["p", "br", "strong", "em", "h1", "h2", "h3", "h4", "h5", "h6", "ul", "ol", "li"]} />
       </div>
 
-      {renderingReplies()}
-
+      {/* <div>
+        Liked by: 
+        {post.like.details}
+      </div> */}
+      <div className="text-warning pb-3">
+        Likes: {post.like.noOfLikes}
+      </div>
+      
+      <div className="text-info">
+        Liked by: {renderingLikes()}
+      </div>
+      
       <Link to={`/post/${post.tweetId}`}>
         <button className="btn btn-sm btn-danger bi-align-right">Back</button>
       </Link>
@@ -198,4 +196,4 @@ function DisplayReplies() {
   );
 }
 
-export default DisplayReplies;
+export default DisplayLikes;

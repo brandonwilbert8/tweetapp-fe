@@ -62,7 +62,7 @@ function DiscoverTweets(props) {
 
           return (
             <Link key={tweet.username} to={`/post/${tweet.tweetId}`} className="list-group-item list-group-item-action">
-              {isOwner() ? (
+              {/* {isOwner() ? (
                 <h5>
                   <strong>{tweet.tweet}</strong>{" "}
                 </h5>
@@ -80,7 +80,10 @@ function DiscoverTweets(props) {
                     <ReactTooltip id="reply" className="custom-tooltip" />
                   </div>
                 </h5>
-              )}
+              )} */}
+              <h5>
+                <strong>{tweet.tweet}</strong>
+              </h5>
               <span className="text-muted small">@{tweet.username}</span>
             </Link>
           );

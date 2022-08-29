@@ -142,9 +142,15 @@ function ViewSinglePost() {
         ) : (
           // If NOT the owner of the tweet, then do
           <span className="pt-2">
-            <Link to={`/post/${post.tweetId}/edit`} data-tip="Like Tweet" data-for="like" className="text-primary mr-2">
-              <i className="far fa-thumbs-up"></i>
-            </Link>
+            {isLiked() ? (
+              <a onClick={unlikeHandler} data-tip="Unlike Tweet" data-for="like" className="text-primary mr-2">
+                <i className="fas fa-thumbs-up"></i>
+              </a>
+            ) : (
+              <a onClick={likeHandler} data-tip="Like Tweet" data-for="like" className="text-primary mr-2">
+                <i className="far fa-thumbs-up"></i>
+              </a>
+            )}
             <ReactTooltip id="like" className="custom-tooltip" />{" "}
             <Link to={`/post/${post.tweetId}/reply`} data-tip="Reply to this Tweet" data-for="reply" className="text-success">
               <i className="fas fa-reply"></i>
@@ -153,24 +159,34 @@ function ViewSinglePost() {
           </span>
         )}
       </div>
-
       <p className="text-muted small">
         Posted by <Link to={`/profile/${post.username}/`}>{post.username}</Link>
       </p>
-
-      {post.like ? <p className="text-muted small">Likes:{post.like.noOfLikes}</p> : <p className="text-muted small">Likes: 0</p>}
-
+      {post.like ? (
+        <Link to={`/post/${post.tweetId}/displaylikes`} className="text-muted small" data-tip="View Like" data-for="view-like">
+          Likes: {post.like.noOfLikes}
+        </Link>
+      ) : (
+        <p className="text-muted small">Likes: 0</p>
+      )}
+      <ReactTooltip id="view-like" className="custom-tooltip" />{" "}
       {post.replies ? (
-        <Link to={`/post/${post.tweetId}/displayreplies`} className="text-muted small">
+        <Link to={`/post/${post.tweetId}/displayreplies`} data-tip="View Reply" data-for="view-reply" className="text-muted small">
           Replies: {post.replies.length}
         </Link>
       ) : (
         <p className="text-muted small">Replies: 0</p>
       )}
-
+      <ReactTooltip id="view-reply" className="custom-tooltip" />{" "}
       <div className="body-content">
         <ReactMarkdown children={post.tweet} allowedElements={["p", "br", "strong", "em", "h1", "h2", "h3", "h4", "h5", "h6", "ul", "ol", "li"]} />
       </div>
+      <Link to={`/profile/${post.username}`}>
+        <button className="btn btn-sm btn-danger mr-2">Back to Profile</button>
+      </Link>
+      <Link to={`/discovertweets`}>
+        <button className="btn btn-sm btn-dark">Discover Tweets</button>
+      </Link>
     </Page>
   );
 }

@@ -25,6 +25,7 @@ import AllUsers from "./components/AllUsers";
 import DiscoverTweets from "./components/DiscoverTweets";
 import ReplyPost from "./components/ReplyPost";
 import DisplayReplies from "./components/DisplayReplies";
+import DisplayLikes from "./components/DisplayLikes"
 import AfterRegister from "./components/AfterRegister";
 import Search from "./components/Search";
 
@@ -94,6 +95,7 @@ function Main() {
             <Route path="/post/:tweetId/edit" element={<EditPost />} />
             <Route path="/post/:tweetId/reply" element={<ReplyPost />} />
             <Route path="/post/:tweetId/displayreplies" element={<DisplayReplies />} />
+            <Route path="/post/:tweetId/displaylikes" element={<DisplayLikes />} />
             <Route path="/post/:tweetId" element={<ViewSinglePost />} />
             <Route path="/about-us" element={<About />} />
             <Route path="/terms" element={<Terms />} />
