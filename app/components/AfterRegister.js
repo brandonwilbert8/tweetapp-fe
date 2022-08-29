@@ -12,7 +12,7 @@ function AfterRegister() {
       <h2 className="text-center">Welcome to TweetApp</h2>
       <p className="lead text-muted text-center">Please login by using the header bar</p>
       <Link to="/">
-        <button className="btn btn-sm btn-danger bi-align-middle">Back</button>
+        <button className="btn btn-lg btn-block btn-danger">Back</button>
       </Link>
     </Page>
   );

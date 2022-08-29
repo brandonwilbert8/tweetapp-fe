@@ -44,6 +44,11 @@ function HomeGuest() {
       hasErrors: false,
       message: "",
     },
+    confirmPassword: {
+      value: "",
+      hasErrors: false,
+      message: "",
+    },
     contactNumber: {
       value: "",
       hasErrors: false,
@@ -101,11 +106,15 @@ function HomeGuest() {
       case "emailImmediately":
         draft.email.hasErrors = false;
         draft.email.value = action.value;
+        if (!/^\S+@\S+$/.test(draft.email.value)) {
+          draft.email.hasErrors = true;
+          draft.email.message = "You must provide a valid email address.";
+        }
         return;
       case "emailAfterDelay":
         if (!/^\S+@\S+$/.test(draft.email.value)) {
           draft.email.hasErrors = true;
-          draft.email.message = "You must provide a valid email address.";
+          draft.email.message = "Your email is still not a valid email address.";
         }
         if (!draft.email.hasErrors && !action.noRequest) {
           draft.email.checkCount++;
@@ -134,6 +143,19 @@ function HomeGuest() {
           draft.password.message = "Password must be at least 4 characters.";
         }
         return;
+      case "confirmPasswordImmediately":
+        draft.confirmPassword.hasErrors = false;
+        draft.confirmPassword.value = action.value;
+        if (draft.confirmPassword.value !== draft.password.value) {
+          draft.confirmPassword.hasErrors = true;
+          draft.confirmPassword.message = "Password does not match";
+        }
+        return;
+      case "confirmPasswordAfterDelay":
+        if (!draft.confirmPassword.hasErrors && !action.noRequest) {
+          draft.confirmPassword.checkCount++;
+        }
+        return;
       case "contactNumberImmediately":
         draft.contactNumber.hasErrors = false;
         draft.contactNumber.value = action.value;
@@ -149,8 +171,10 @@ function HomeGuest() {
       case "contactNumberAfterDelay":
         return;
       case "submitForm":
-        if (!draft.firstName.hasErrors && !draft.lastName.hasErrors && !draft.username.hasErrors && draft.username.isUnique && !draft.email.hasErrors && draft.email.isUnique && !draft.password.hasErrors && !draft.contactNumber.hasErrors) {
+        if (!draft.firstName.hasErrors && !draft.lastName.hasErrors && !draft.username.hasErrors && draft.username.isUnique && !draft.email.hasErrors && draft.email.isUnique && !draft.password.hasErrors && !draft.confirmPassword.hasErrors && !draft.contactNumber.hasErrors) {
           draft.submitCount++;
+        } else {
+          appDispatch({ type: "failedFlashMessage", value: "Please check all the fields" });
         }
         return;
     }
@@ -178,6 +202,13 @@ function HomeGuest() {
       return () => clearTimeout(delay);
     }
   }, [state.password.value]);
+
+  useEffect(() => {
+    if (state.confirmPassword.value) {
+      const delay = setTimeout(() => dispatch({ type: "confirmPasswordAfterDelay" }), 800);
+      return () => clearTimeout(delay);
+    }
+  }, [state.confirmPassword.value]);
 
   useEffect(() => {
     if (state.username.checkCount) {
@@ -255,6 +286,7 @@ function HomeGuest() {
     dispatch({ type: "usernameAfterDelay", value: state.username.value, noRequest: true });
     dispatch({ type: "passwordImmediately", value: state.password.value });
     dispatch({ type: "passwordAfterDelay", value: state.password.value });
+    dispatch({ type: "confirmPasswordImmediately", value: state.confirmPassword.value})
     dispatch({ type: "contactNumberImmediately", value: state.contactNumber.value });
     dispatch({ type: "contactNumberAfterDelay", value: state.contactNumber.value });
     dispatch({ type: "submitForm" });
@@ -339,6 +371,15 @@ function HomeGuest() {
               <input onChange={(e) => dispatch({ type: "passwordImmediately", value: e.target.value })} id="password-register" name="password" className="form-control" type="password" placeholder="Create a password" />
               <CSSTransition in={state.password.hasErrors} timeout={330} classNames="liveValidateMessage" unmountOnExit>
                 <div className="alert alert-danger small liveValidateMessage">{state.password.message}</div>
+              </CSSTransition>
+            </div>
+            <div className="form-group">
+              <label htmlFor="confirmpassword-register" className="text-muted mb-1">
+                <small>Confirm Password</small>
+              </label>
+              <input onChange={(e) => dispatch({ type: "confirmPasswordImmediately", value: e.target.value })} id="confirmpassword-register" name="confirmPassword" className="form-control" type="password" placeholder="Confirm password" />
+              <CSSTransition in={state.confirmPassword.hasErrors} timeout={330} classNames="liveValidateMessage" unmountOnExit>
+                <div className="alert alert-danger small liveValidateMessage">{state.confirmPassword.message}</div>
               </CSSTransition>
             </div>
             <div className="form-group">

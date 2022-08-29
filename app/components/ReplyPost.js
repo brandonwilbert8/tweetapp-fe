@@ -199,6 +199,8 @@ function ReplyPost() {
         <button className="btn btn-primary" type="submit" disabled={state.isSaving}>
           Post Reply
         </button>
+
+        <div className="text-muted text-right">{state.reply.value.length}/144</div>
       </form>
     </Page>
   );

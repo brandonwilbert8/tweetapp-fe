@@ -138,6 +138,7 @@ function CreateTweet(props) {
           Post Tweet
         </button>
       </form>
+      <div className="text-muted text-right">{state.tweet.value.length}/144</div>
     </Page>
   );
 }
