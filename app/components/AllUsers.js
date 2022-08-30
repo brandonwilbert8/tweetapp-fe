@@ -59,7 +59,7 @@ function AllUsers(props) {
           return (
             <Link key={user.username} to={`/profile/${user.username}`} className="list-group-item list-group-item-action">
               <h4>
-                <strong className="text-primary">@{user.username} </strong>{" "}
+                <strong className="text-info">@{user.username} </strong>{" "}
               </h4>
               <span className="text-dark">
                 {user.firstName} {user.lastName}

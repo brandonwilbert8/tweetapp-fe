@@ -163,26 +163,30 @@ function ViewSinglePost() {
         Posted by <Link to={`/profile/${post.username}/`}>{post.username}</Link>
       </p>
       {post.like ? (
-        <Link to={`/post/${post.tweetId}/displaylikes`} className="text-muted small" data-tip="View Like" data-for="view-like">
+        <Link to={`/post/${post.tweetId}/displaylikes`} className="text-muted small mt-3" data-tip="View Like" data-for="view-like">
           Likes: {post.like.noOfLikes}
         </Link>
       ) : (
-        <p className="text-muted small">Likes: 0</p>
+        <p className="text-muted small mt-3">Likes: 0</p>
       )}
       <ReactTooltip id="view-like" className="custom-tooltip" />{" "}
       {post.replies ? (
-        <Link to={`/post/${post.tweetId}/displayreplies`} data-tip="View Reply" data-for="view-reply" className="text-muted small">
+        <Link to={`/post/${post.tweetId}/displayreplies`} data-tip="View Reply" data-for="view-reply" className="text-muted small mt-3">
           Replies: {post.replies.length}
         </Link>
       ) : (
-        <p className="text-muted small">Replies: 0</p>
+        <p className="text-muted small mt-3">Replies: 0</p>
       )}
-      <div className = "text-muted small">
+
+      {post.tag ? (<div className="text-muted small">Tag: #{post.tag}</div>) : ("")}
+
+      <div className = "text-muted small mt-3">
         Posted on: {post.postedTweetDate} - {post.postedTweetTime}
       </div>
+      
       <ReactTooltip id="view-reply" className="custom-tooltip" />{" "}
-      <div className="body-content">
-        <ReactMarkdown children={post.tweet} allowedElements={["p", "br", "strong", "em", "h1", "h2", "h3", "h4", "h5", "h6", "ul", "ol", "li"]} />
+      <div className="body-content mt-3">
+        <ReactMarkdown children={post.tweet} allowedElements={["p", "br", "strong", "em", "h1", "h2", "h3", "h4", "h5", "h6", "ul", "ol", "li"]}/>
       </div>
       <Link to={`/profile/${post.username}`}>
         <button className="btn btn-sm btn-danger mr-2">Back to Profile</button>

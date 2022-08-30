@@ -26,6 +26,12 @@ function CreateTweet(props) {
       message: "",
       checkCount: 0,
     },
+    tweetTag: {
+      value: "",
+      hasErrors: false,
+      message: "",
+      checkCount: 0,
+    },
     submitCount: 0,
   };
 
@@ -51,8 +57,21 @@ function CreateTweet(props) {
           draft.tweet.checkCount++;
         }
         return;
+      case "tweetTagImmediately":
+        draft.tweetTag.hasErrors = false;
+        draft.tweetTag.value = action.value;
+        if (draft.tweetTag.value.length > 50) {
+          draft.tweetTag.hasErrors = true;
+          draft.tweetTag.message = "A tag cannot be more than 50 characters";
+        }
+        return;
+      case "tweetTagAfterDelay":
+        if (!draft.hasErrors && !action.noRequest) {
+          draft.tweetTag.checkCount++;
+        }
+        return;
       case "submitForm":
-        if (!draft.tweet.hasErrors) {
+        if (!draft.tweet.hasErrors && !draft.tweetTag.hasErrors) {
           draft.submitCount++;
         }
         return;
@@ -67,6 +86,13 @@ function CreateTweet(props) {
   }, [state.tweet.value]);
 
   useEffect(() => {
+    if (state.tweetTag.value) {
+      const delay = setTimeout(() => dispatch({ type: "tweetTagAfterDelay" }), 800);
+      return () => clearTimeout(delay);
+    }
+  }, [state.tweetTag.value]);
+
+  useEffect(() => {
     if (state.submitCount) {
       const ourRequest = Axios.CancelToken.source();
 
@@ -78,6 +104,7 @@ function CreateTweet(props) {
               tweetId: x,
               tweet: state.tweet.value,
               username: username,
+              tag: state.tweetTag.value,
               postedTweetDate: postedDate,
               postedTweetTime: postedTime,
             },
@@ -99,6 +126,7 @@ function CreateTweet(props) {
   function handleSubmit(e) {
     e.preventDefault();
     dispatch({ type: "tweetImmediately", value: state.tweet.value });
+    dispatch({ type: "tweetTagImmediately", value: state.tweetTag.value });
     dispatch({ type: "submitForm" });
   }
 
@@ -133,18 +161,30 @@ function CreateTweet(props) {
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="post-body" className="text-muted mb-1 d-block">
-            <small>Tweet</small>
+            <small>Tweet:</small>
           </label>
           <textarea onChange={(e) => dispatch({ type: "tweetImmediately", value: e.target.value })} name="tweet" id="post-body" className="body-content tall-textarea form-control" type="text"></textarea>
           <CSSTransition in={state.tweet.hasErrors} timeout={330} classNames="liveValidateMessage" unmountOnExit>
             <div className="alert alert-danger small liveValidateMessage">{state.tweet.message}</div>
           </CSSTransition>
         </div>
+
+        <div className="form-group">
+          <label htmlFor="post-body" className="text-muted mb-1 d-block">
+            <small>Add a tag:</small>
+          </label>
+          <textarea onChange={(e) => dispatch({ type: "tweetTagImmediately", value: e.target.value })} name="tweetTag" id="post-body" className="body-content textarea form-control" type="text"></textarea>
+          <CSSTransition in={state.tweetTag.hasErrors} timeout={330} classNames="liveValidateMessage" unmountOnExit>
+            <div className="alert alert-danger small liveValidateMessage">{state.tweetTag.message}</div>
+          </CSSTransition>
+        </div>
+
         <button className="btn btn-primary" type="submit">
           Post Tweet
         </button>
       </form>
-      <div className="text-muted text-right">{state.tweet.value.length}/144</div>
+      <div className="text-muted text-right">Tweet Character: {state.tweet.value.length}/144</div>
+      <div className="text-muted text-right">Tag Character: {state.tweetTag.value.length}/50</div>
     </Page>
   );
 }

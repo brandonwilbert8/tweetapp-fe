@@ -34,6 +34,12 @@ function ReplyPost() {
       message: "",
       checkCount: 0,
     },
+    replyTag:{
+      value: "",
+      hasErrors: false,
+      message: "",
+      checkCount: 0,
+    },
     isFetching: true,
     isSaving: false,
     id: useParams().tweetId,
@@ -70,8 +76,21 @@ function ReplyPost() {
           draft.reply.message = "You must provide reply content.";
         }
         return;
+      case "replyTagImmediately":
+        draft.replyTag.hasErrors = false;
+        draft.replyTag.value = action.value;
+        if (draft.replyTag.value.length > 50) {
+          draft.replyTag.hasErrors = true;
+          draft.replyTag.message = "A tag cannot be more than 50 characters";
+        }
+        return;
+      case "replyTagAfterDelay":
+        if (!draft.hasErrors && !action.noRequest) {
+          draft.replyTag.checkCount++;
+        }
+        return;
       case "submitForm":
-        if (!draft.reply.hasErrors) {
+        if (!draft.reply.hasErrors && !draft.replyTag.hasErrors) {
           draft.submitCount++;
         }
         return;
@@ -91,10 +110,17 @@ function ReplyPost() {
 
   useEffect(() => {
     if (state.reply.value) {
-      const delay = setTimeout(() => dispatch({ type: "tweetAfterDelay" }), 800);
+      const delay = setTimeout(() => dispatch({ type: "replyAfterDelay" }), 800);
       return () => clearTimeout(delay);
     }
   }, [state.reply.value]);
+
+  useEffect(() => {
+    if (state.replyTag.value) {
+      const delay = setTimeout(() => dispatch({ type: "replyTagAfterDelay" }), 800);
+      return () => clearTimeout(delay);
+    }
+  }, [state.replyTag.value]);
 
   useEffect(() => {
     const ourRequest = Axios.CancelToken.source();
@@ -145,6 +171,7 @@ function ReplyPost() {
             replyTweetId: replyTweetId,
             replyTweet: state.reply.value,
             username: currentUser,
+            tag: state.replyTag.value,
             postedReplyDate: postedDate,
             postedReplyTime: postedTime
           });
@@ -164,6 +191,7 @@ function ReplyPost() {
   function handleSubmit(e) {
     e.preventDefault();
     dispatch({ type: "replyImmediately", value: state.reply.value });
+    dispatch({ type: "replyTagImmediately", value: state.replyTag.value });
     dispatch({ type: "submitForm" });
   }
 
@@ -181,7 +209,7 @@ function ReplyPost() {
   return (
     <Page title={post.tweetId}>
       <div className="d-flex justify-content-between">
-        <h2>Tweet ID: {post.tweetId}</h2>
+        <h6>Tweet ID: {post.tweetId}</h6>
       </div>
 
       <p className="text-muted small mb-4">
@@ -195,18 +223,30 @@ function ReplyPost() {
       <form className="mt-3" onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="post-body" className="text-muted mb-1 d-block">
-            <small>Reply</small>
+            <small>Reply:</small>
           </label>
           <textarea onChange={(e) => dispatch({ type: "replyImmediately", value: e.target.value })} name="reply" id="post-body" className="body-content tall-textarea form-control" type="text" />
           <CSSTransition in={state.reply.hasErrors} timeout={330} classNames="liveValidateMessage" unmountOnExit>
             <div className="alert alert-danger small liveValidateMessage">{state.reply.message}</div>
           </CSSTransition>
         </div>
+
+        <div className="form-group">
+          <label htmlFor="post-body" className="text-muted mb-1 d-block">
+            <small>Add a tag for your reply:</small>
+          </label>
+          <textarea onChange={(e) => dispatch({ type: "replyTagImmediately", value: e.target.value })} name="replyTag" id="post-body" className="body-content textarea form-control" type="text"></textarea>
+          <CSSTransition in={state.replyTag.hasErrors} timeout={330} classNames="liveValidateMessage" unmountOnExit>
+            <div className="alert alert-danger small liveValidateMessage">{state.replyTag.message}</div>
+          </CSSTransition>
+        </div>
+
         <button className="btn btn-primary" type="submit" disabled={state.isSaving}>
           Post Reply
         </button>
 
-        <div className="text-muted text-right">{state.reply.value.length}/144</div>
+        <div className="text-muted text-right">Reply Tweet Character: {state.reply.value.length}/144</div>
+        <div className="text-muted text-right">Tag Character: {state.replyTag.value.length}/50</div>
       </form>
     </Page>
   );

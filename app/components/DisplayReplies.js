@@ -147,6 +147,16 @@ function DisplayReplies() {
           >
             {element.postedReplyTime}
           </td>
+          {element.tag ? (
+            <td
+            style={{
+              fontStyle: "italic",
+              color: "purple",
+            }}
+          >
+            #{element.tag}
+          </td>
+          ) : ("")}
         </tr>
       );
     });
