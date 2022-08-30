@@ -64,14 +64,36 @@ function HomeGuest() {
       case "firstNameImmediately":
         draft.firstName.hasErrors = false;
         draft.firstName.value = action.value;
+        if (draft.firstName.value.length <= 0) {
+          draft.firstName.hasErrors = true;
+          draft.firstName.message = "First Name cannot be empty";
+        }
         return;
       case "firstNameAfterDelay":
+        if (draft.firstName.value.length <= 0) {
+          draft.firstName.hasErrors = true;
+          draft.firstName.message = "First Name cannot be empty";
+        }
+        if (!draft.hasErrors && !action.noRequest) {
+          draft.firstName.checkCount++;
+        }
         return;
       case "lastNameImmediately":
         draft.lastName.hasErrors = false;
         draft.lastName.value = action.value;
+        if (draft.lastName.value.length <= 0) {
+          draft.lastName.hasErrors = true;
+          draft.lastName.message = "First Name cannot be empty";
+        }
         return;
       case "lastNameAfterDelay":
+        if (draft.lastName.value.length <= 0) {
+          draft.lastName.hasErrors = true;
+          draft.lastName.message = "First Name cannot be empty";
+        }
+        if (!draft.hasErrors && !action.noRequest) {
+          draft.lastName.checkCount++;
+        }
         return;
       case "usernameImmediately":
         draft.username.hasErrors = false;
@@ -106,15 +128,23 @@ function HomeGuest() {
       case "emailImmediately":
         draft.email.hasErrors = false;
         draft.email.value = action.value;
-        if (!/^\S+@\S+$/.test(draft.email.value)) {
+        var regex = new RegExp(
+          /* eslint-disable-next-line no-useless-escape */
+          /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        );
+        if (!regex.test(draft.email.value)) {
           draft.email.hasErrors = true;
           draft.email.message = "You must provide a valid email address.";
         }
         return;
       case "emailAfterDelay":
-        if (!/^\S+@\S+$/.test(draft.email.value)) {
+        var regex = new RegExp(
+          /* eslint-disable-next-line no-useless-escape */
+          /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        );
+        if (!regex.test(draft.email.value)) {
           draft.email.hasErrors = true;
-          draft.email.message = "Your email is still not a valid email address.";
+          draft.email.message = "You must provide a valid email address.";
         }
         if (!draft.email.hasErrors && !action.noRequest) {
           draft.email.checkCount++;
@@ -159,28 +189,65 @@ function HomeGuest() {
       case "contactNumberImmediately":
         draft.contactNumber.hasErrors = false;
         draft.contactNumber.value = action.value;
+        var mobileNumberRegex = new RegExp(
+          // Start with 04, 10 digits
+          /^(?:\+61|0)4 ?[0-9]{8}$/
+        );
         if (draft.contactNumber.value.length > 10) {
           draft.contactNumber.hasErrors = true;
           draft.contactNumber.message = "Contact Number cannot exceed 10 characters long.";
         }
-        if (draft.contactNumber.value && !/^([0-9]+)$/.test(draft.contactNumber.value)) {
+        if (draft.contactNumber.value.length <= 0) {
           draft.contactNumber.hasErrors = true;
-          draft.contactNumber.message = "Contact Number can only contain numbers.";
+          draft.contactNumber.message = "Contact Number cannot be empty.";
+        }
+        if (draft.contactNumber.value && !mobileNumberRegex.test(draft.contactNumber.value)) {
+          draft.contactNumber.hasErrors = true;
+          draft.contactNumber.message = "Contact Number must be a valid contact number.";
         }
         return;
       case "contactNumberAfterDelay":
+        mobileNumberRegex = new RegExp(
+          // Start with 04, 10 digits
+          /^(?:\+61|0)4 ?[0-9]{8}$/
+        );
+        if (draft.contactNumber.value && !mobileNumberRegex.test(draft.contactNumber.value)) {
+          draft.contactNumber.hasErrors = true;
+          draft.contactNumber.message = "Contact Number must be a valid contact number.";
+        }
+        if (draft.contactNumber.value.length <= 0) {
+          draft.contactNumber.hasErrors = true;
+          draft.contactNumber.message = "Contact Number cannot be empty.";
+        }
+        if (!draft.contactNumber.hasErrors && !action.noRequest) {
+          draft.contactNumber.checkCount++;
+        }
         return;
       case "submitForm":
         if (!draft.firstName.hasErrors && !draft.lastName.hasErrors && !draft.username.hasErrors && draft.username.isUnique && !draft.email.hasErrors && draft.email.isUnique && !draft.password.hasErrors && !draft.confirmPassword.hasErrors && !draft.contactNumber.hasErrors) {
           draft.submitCount++;
         } else {
-          appDispatch({ type: "failedFlashMessage", value: "Please check all the fields" });
+          appDispatch({ type: "failedFlashMessage", value: "Please check all the required fields" });
         }
         return;
     }
   }
 
   const [state, dispatch] = useImmerReducer(ourReducer, initialState);
+
+  useEffect(() => {
+    if (state.firstName.value) {
+      const delay = setTimeout(() => dispatch({ type: "firstNameAfterDelay" }), 800);
+      return () => clearTimeout(delay);
+    }
+  }, [state.firstName.value]);
+
+  useEffect(() => {
+    if (state.lastName.value) {
+      const delay = setTimeout(() => dispatch({ type: "lastNameAfterDelay" }), 800);
+      return () => clearTimeout(delay);
+    }
+  }, [state.lastName.value]);
 
   useEffect(() => {
     if (state.username.value) {
@@ -209,6 +276,13 @@ function HomeGuest() {
       return () => clearTimeout(delay);
     }
   }, [state.confirmPassword.value]);
+
+  useEffect(() => {
+    if (state.contactNumber.value) {
+      const delay = setTimeout(() => dispatch({ type: "contactNumberAfterDelay" }), 800);
+      return () => clearTimeout(delay);
+    }
+  }, [state.contactNumber.value]);
 
   useEffect(() => {
     if (state.username.checkCount) {
@@ -279,16 +353,18 @@ function HomeGuest() {
   function handleSubmit(e) {
     e.preventDefault();
     dispatch({ type: "firstNameImmediately", value: state.firstName.value });
+    dispatch({ type: "firstNameAfterDelay", value: state.firstName.value, noRequest: true });
     dispatch({ type: "lastNameImmediately", value: state.lastName.value });
+    dispatch({ type: "lastNameAfterDelay", value: state.lastName.value, noRequest: true });
     dispatch({ type: "emailImmediately", value: state.email.value });
     dispatch({ type: "emailAfterDelay", value: state.email.value, noRequest: true });
     dispatch({ type: "usernameImmediately", value: state.username.value });
     dispatch({ type: "usernameAfterDelay", value: state.username.value, noRequest: true });
     dispatch({ type: "passwordImmediately", value: state.password.value });
     dispatch({ type: "passwordAfterDelay", value: state.password.value });
-    dispatch({ type: "confirmPasswordImmediately", value: state.confirmPassword.value})
+    dispatch({ type: "confirmPasswordImmediately", value: state.confirmPassword.value });
     dispatch({ type: "contactNumberImmediately", value: state.contactNumber.value });
-    dispatch({ type: "contactNumberAfterDelay", value: state.contactNumber.value });
+    dispatch({ type: "contactNumberAfterDelay", value: state.contactNumber.value, noRequest: true });
     dispatch({ type: "submitForm" });
   }
 
@@ -339,12 +415,18 @@ function HomeGuest() {
                 <small>First Name</small>
               </label>
               <input onChange={(e) => dispatch({ type: "firstNameImmediately", value: e.target.value })} id="firstname-register" name="firstName" className="form-control" type="text" placeholder="First Name" autoComplete="off" />
+              <CSSTransition in={state.firstName.hasErrors} timeout={330} classNames="liveValidateMessage" unmountOnExit>
+                <div className="alert alert-danger small liveValidateMessage">{state.firstName.message}</div>
+              </CSSTransition>
             </div>
             <div className="form-group">
               <label htmlFor="lastname-register" className="text-muted mb-1">
                 <small>Last Name</small>
               </label>
               <input onChange={(e) => dispatch({ type: "lastNameImmediately", value: e.target.value })} id="lastname-register" name="lastName" className="form-control" type="text" placeholder="Last Name" autoComplete="off" />
+              <CSSTransition in={state.lastName.hasErrors} timeout={330} classNames="liveValidateMessage" unmountOnExit>
+                <div className="alert alert-danger small liveValidateMessage">{state.lastName.message}</div>
+              </CSSTransition>
             </div>
             <div className="form-group">
               <label htmlFor="email-register" className="text-muted mb-1">
