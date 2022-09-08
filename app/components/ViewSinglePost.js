@@ -77,6 +77,8 @@ function ViewSinglePost() {
           appDispatch({ type: "flashMessage", value: "Post was successfully deleted" });
           // 2. redirect back to the profie page
           navigate(`/profile/${localStorage.getItem("tweetappUsername")}`);
+          //window.location.reload();
+          //appDispatch({ type: "flashMessage", value: "Post was successfully deleted" });
         }
       } catch (e) {
         console.log("There was a problem, could not delete.");
@@ -177,16 +179,13 @@ function ViewSinglePost() {
       ) : (
         <p className="text-muted small mt-3">Replies: 0</p>
       )}
-
-      {post.tag ? (<div className="text-muted small">Tag: #{post.tag}</div>) : ("")}
-
-      <div className = "text-muted small mt-3">
+      {post.tag ? <div className="text-muted small">Tag: #{post.tag}</div> : ""}
+      <div className="text-muted small mt-3">
         Posted on: {post.postedTweetDate} - {post.postedTweetTime}
       </div>
-      
       <ReactTooltip id="view-reply" className="custom-tooltip" />{" "}
       <div className="body-content mt-3">
-        <ReactMarkdown children={post.tweet} allowedElements={["p", "br", "strong", "em", "h1", "h2", "h3", "h4", "h5", "h6", "ul", "ol", "li"]}/>
+        <ReactMarkdown children={post.tweet} allowedElements={["p", "br", "strong", "em", "h1", "h2", "h3", "h4", "h5", "h6", "ul", "ol", "li"]} />
       </div>
       <Link to={`/profile/${post.username}`}>
         <button className="btn btn-sm btn-danger mr-2">Back to Profile</button>
