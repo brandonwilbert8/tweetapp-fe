@@ -7,7 +7,7 @@ import StateContext from "../StateContext";
 import { Link } from "react-router-dom";
 
 function Profile() {
-  //const username = localStorage.getItem("tweetappUsername");
+  const currentUser = localStorage.getItem("tweetappUsername");
   const { username } = useParams();
   const appState = useContext(StateContext);
   const [profileData, setProfileData] = useState({

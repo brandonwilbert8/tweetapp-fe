@@ -1,12 +1,14 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import DispatchContext from "../DispatchContext";
 import StateContext from "../StateContext";
 import ReactTooltip from "react-tooltip";
+import { useParams } from "react-router-dom";
 
 function HeaderLoggedIn(props) {
   const appDispatch = useContext(DispatchContext);
   const appState = useContext(StateContext);
+  const currentUser = localStorage.getItem("tweetappUsername");
 
   function handleLogout() {
     appDispatch({ type: "logout" });
@@ -17,9 +19,17 @@ function HeaderLoggedIn(props) {
 
     window.location.href = "/";
     appState({ type: "logout" });
+    window.history.forward();
     window.location.clear();
     window.location.reload();
   }
+
+  function handleProfile() {
+    appDispatch({ type: "login" });
+    window.location.href = `/profile/${currentUser}`;
+    //window.location.reload();
+  }
+
   /*
   <a href="#" className="mr-2">
         <img className="small-header-avatar" src={localStorage.getItem("tweetappAvatar")} />
@@ -35,9 +45,12 @@ function HeaderLoggedIn(props) {
         Discover Tweets
       </Link>
       <ReactTooltip place="bottom" id="discovertweets" className="custom-tooltip" />
-      <Link data-tip="Currently logged in as:" data-for="currentuser" className="btn btn-sm btn-light mr-1" to={`profile/${localStorage.getItem("tweetappUsername")}`}>
-        <strong>{localStorage.getItem("tweetappUsername")}</strong>
-      </Link>
+      {/* <Link data-tip="Currently logged in as:" data-for="currentuser" className="btn btn-sm btn-light mr-1" to={`profile/${currentUser}`} key={currentUser}>
+        <strong>{currentUser}</strong>
+      </Link> */}
+      <button data-tip="Currently logged in as:" data-for="currentuser" className="btn btn-sm btn-light mr-1" onClick={handleProfile}>
+        <strong>{currentUser}</strong>
+      </button>
       <ReactTooltip place="bottom" id="currentuser" className="custom-tooltip" />
       <Link data-tip="Create a new tweet" data-for="createtweet" className="btn btn-sm btn-success mr-1" to="/create-post">
         Create Tweet

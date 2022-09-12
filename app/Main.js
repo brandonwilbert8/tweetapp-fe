@@ -25,7 +25,7 @@ import AllUsers from "./components/AllUsers";
 import DiscoverTweets from "./components/DiscoverTweets";
 import ReplyPost from "./components/ReplyPost";
 import DisplayReplies from "./components/DisplayReplies";
-import DisplayLikes from "./components/DisplayLikes"
+import DisplayLikes from "./components/DisplayLikes";
 import AfterRegister from "./components/AfterRegister";
 import Search from "./components/Search";
 import ForgotPassword from "./components/ForgotPassword";
@@ -104,7 +104,7 @@ function Main() {
             <Route path="/allusers" element={<AllUsers />} />
             <Route path="/discovertweets" element={<DiscoverTweets />} />
             <Route path="/afterregister" element={state.loggedIn ? <HomeGuest /> : <AfterRegister />} />
-            <Route path="/forgotpassword" element={state.loggedIn? <HomeGuest/> : <ForgotPassword />} />
+            <Route path="/forgotpassword" element={state.loggedIn ? <HomeGuest /> : <ForgotPassword />} />
           </Routes>
           <CSSTransition timeout={330} in={state.isSearchOpen} classNames="search-overlay" unmountOnExit>
             <Search />
