@@ -6,7 +6,7 @@ import LoadingDotsIcon from "./LoadingDotsIcon";
 import ReactTooltip from "react-tooltip";
 
 function ProfilePosts(props) {
-  //const username = localStorage.getItem("tweetappUsername");
+  const currentUser = localStorage.getItem("tweetappUsername");
   const { username } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [posts, setPosts] = useState([]);
