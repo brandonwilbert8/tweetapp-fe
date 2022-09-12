@@ -22,7 +22,6 @@ function HeaderLoggedIn(props) {
     window.history.forward();
     window.location.clear();
     window.location.reload();
-    
   }
 
   function handleProfile() {
