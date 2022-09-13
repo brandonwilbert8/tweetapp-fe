@@ -34,7 +34,7 @@ function ReplyPost() {
       message: "",
       checkCount: 0,
     },
-    replyTag:{
+    replyTag: {
       value: "",
       hasErrors: false,
       message: "",
@@ -127,7 +127,7 @@ function ReplyPost() {
 
     async function fetchPost() {
       try {
-        const response = await Axios.get(`http://localhost:8081/api/v1.0/tweets/${username}/${tweetId}`, { cancelToken: ourRequest.token });
+        const response = await Axios.get(`/api/v1.0/tweets/${username}/${tweetId}`, { cancelToken: ourRequest.token });
         setPost(response.data);
         setIsLoading(false);
         console.log(response.data);
@@ -166,14 +166,14 @@ function ReplyPost() {
 
       async function postReply() {
         try {
-          const response = await Axios.post(`http://localhost:8081/api/v1.0/tweets/${username}/reply/${tweetId}`, {
+          const response = await Axios.post(`/api/v1.0/tweets/${username}/reply/${tweetId}`, {
             tweetId: tweetId,
             replyTweetId: replyTweetId,
             replyTweet: state.reply.value,
             username: currentUser,
             tag: state.replyTag.value,
             postedReplyDate: postedDate,
-            postedReplyTime: postedTime
+            postedReplyTime: postedTime,
           });
           // Redirect to the new tweet page
           appDispatch({ type: "flashMessage", value: "Congratulations, you have successfully posted a reply!" });

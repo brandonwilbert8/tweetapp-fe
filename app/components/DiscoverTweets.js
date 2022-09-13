@@ -20,7 +20,7 @@ function DiscoverTweets(props) {
   useEffect(() => {
     async function fetchAllTweets() {
       try {
-        const response = await Axios.get(`http://localhost:8081/api/v1.0/tweets/all`);
+        const response = await Axios.get(`/api/v1.0/tweets/all`);
         setTweets(response.data);
         console.log(response.data);
         setIsLoading(false);
@@ -85,7 +85,9 @@ function DiscoverTweets(props) {
                 <strong>{tweet.tweet}</strong>
               </h5>
               <span className="text-muted large">@{tweet.username}</span>
-              <span className="text-info small d-flex justify-content-end font-weight-light">{tweet.postedTweetDate} - {tweet.postedTweetTime}</span>
+              <span className="text-info small d-flex justify-content-end font-weight-light">
+                {tweet.postedTweetDate} - {tweet.postedTweetTime}
+              </span>
             </Link>
           );
         })}

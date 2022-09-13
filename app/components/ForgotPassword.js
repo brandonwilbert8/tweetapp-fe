@@ -136,7 +136,7 @@ function ForgotPassword() {
 
       async function fetchResults() {
         try {
-          const response = await Axios.get(`http://localhost:8081/api/v1.0/tweets/user/check/${state.username.value}`, { cancelToken: ourRequest.token });
+          const response = await Axios.get(`/api/v1.0/tweets/user/check/${state.username.value}`, { cancelToken: ourRequest.token });
           dispatch({ type: "usernameUniqueResults", value: response.data });
           console.log(response.data);
         } catch (e) {
@@ -154,7 +154,7 @@ function ForgotPassword() {
       async function resetPassword() {
         try {
           const response = await Axios.put(
-            `http://localhost:8081/api/v1.0/tweets/${state.username.value}/forgot`,
+            `/api/v1.0/tweets/${state.username.value}/forgot`,
             {
               username: state.username.value,
               password: state.newPassword.value,

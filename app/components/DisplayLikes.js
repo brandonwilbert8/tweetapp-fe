@@ -24,7 +24,7 @@ function DisplayLikes() {
 
     async function fetchPost() {
       try {
-        const response = await Axios.get(`http://localhost:8081/api/v1.0/tweets/${username}/${tweetId}`, { cancelToken: ourRequest.token });
+        const response = await Axios.get(`/api/v1.0/tweets/${username}/${tweetId}`, { cancelToken: ourRequest.token });
         setPost(response.data);
         setIsLoading(false);
         console.log(response.data);
@@ -71,7 +71,7 @@ function DisplayLikes() {
     const areYouSure = window.confirm("Do you really want to delete this tweet?");
     if (areYouSure) {
       try {
-        const response = await Axios.delete(`http://localhost:8081/api/v1.0/tweets/${username}/delete/${tweetId}`);
+        const response = await Axios.delete(`/api/v1.0/tweets/${username}/delete/${tweetId}`);
         if (response.data) {
           // 1. display a flash message
           appDispatch({ type: "flashMessage", value: "Post was successfully deleted" });
@@ -86,7 +86,7 @@ function DisplayLikes() {
 
   async function likeHandler() {
     try {
-      const response = await Axios.put(`http://localhost:8081/api/v1.0/tweets/${currentUser}/like/${tweetId}`);
+      const response = await Axios.put(`/api/v1.0/tweets/${currentUser}/like/${tweetId}`);
       if (response.data) {
         // 1. display a flash message
         appDispatch({ type: "flashMessage", value: "Liked a tweet" });
@@ -99,7 +99,7 @@ function DisplayLikes() {
 
   async function unlikeHandler() {
     try {
-      const response = await Axios.put(`http://localhost:8081/api/v1.0/tweets/${currentUser}/unlike/${tweetId}`);
+      const response = await Axios.put(`/api/v1.0/tweets/${currentUser}/unlike/${tweetId}`);
       if (response.data) {
         // 1. display a flash message
         appDispatch({ type: "flashMessage", value: "Unliked a tweet" });
@@ -113,11 +113,7 @@ function DisplayLikes() {
   // Rendering objects from replies - Getting replies from 1 tweet
   function renderingLikes() {
     return Object.keys(post.like.details).map((element) => {
-        return (
-            <div>
-               {post.like.details[element]}
-            </div>
-        )
+      return <div>{post.like.details[element]}</div>;
     });
   }
 
@@ -181,14 +177,10 @@ function DisplayLikes() {
         Liked by: 
         {post.like.details}
       </div> */}
-      <div className="text-warning pb-3">
-        Likes: {post.like.noOfLikes}
-      </div>
-      
-      <div className="text-info">
-        Liked by: {renderingLikes()}
-      </div>
-      
+      <div className="text-warning pb-3">Likes: {post.like.noOfLikes}</div>
+
+      <div className="text-info">Liked by: {renderingLikes()}</div>
+
       <Link to={`/post/${post.tweetId}`}>
         <button className="btn btn-sm btn-danger bi-align-right">Back</button>
       </Link>

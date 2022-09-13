@@ -291,7 +291,7 @@ function HomeGuest() {
 
       async function fetchResults() {
         try {
-          const response = await Axios.get(`http://localhost:8081/api/v1.0/tweets/user/check/${state.username.value}`, { cancelToken: ourRequest.token });
+          const response = await Axios.get(`/api/v1.0/tweets/user/check/${state.username.value}`, { cancelToken: ourRequest.token });
           dispatch({ type: "usernameUniqueResults", value: response.data });
           console.log(response.data);
         } catch (e) {
@@ -308,7 +308,7 @@ function HomeGuest() {
       const ourRequest = Axios.CancelToken.source();
       async function fetchResults() {
         try {
-          const response = await Axios.get(`http://localhost:8081/api/v1.0/tweets/user/email/${state.email.value}`, { cancelToken: ourRequest.token });
+          const response = await Axios.get(`/api/v1.0/tweets/user/email/${state.email.value}`, { cancelToken: ourRequest.token });
           dispatch({ type: "emailUniqueResults", value: response.data });
         } catch (e) {
           console.log("There was a problem or the request was cancelled.");
@@ -325,7 +325,7 @@ function HomeGuest() {
       async function fetchResults() {
         try {
           const response = await Axios.post(
-            "http://localhost:8081/api/v1.0/tweets/register",
+            "/api/v1.0/tweets/register",
             {
               firstName: state.firstName.value,
               lastName: state.lastName.value,

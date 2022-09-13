@@ -99,7 +99,7 @@ function CreateTweet(props) {
       async function postTweet() {
         try {
           const response = await Axios.post(
-            `http://localhost:8081/api/v1.0/tweets/${username}/add`,
+            `/api/v1.0/tweets/${username}/add`,
             {
               tweetId: x,
               tweet: state.tweet.value,

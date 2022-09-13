@@ -14,7 +14,7 @@ function ProfilePosts(props) {
   useEffect(() => {
     async function fetchPosts() {
       try {
-        const response = await Axios.get(`http://localhost:8081/api/v1.0/tweets/${username}/`);
+        const response = await Axios.get(`/api/v1.0/tweets/${username}/`);
         setPosts(response.data);
         console.log(response.data);
         setIsLoading(false);
@@ -38,7 +38,9 @@ function ProfilePosts(props) {
         return (
           <Link key={post.tweetId} to={`/post/${post.tweetId}`} className="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
             <strong>{post.tweet}</strong>
-            <span className="text-info small font-weight-light">{post.postedTweetDate} - {post.postedTweetTime}</span>
+            <span className="text-info small font-weight-light">
+              {post.postedTweetDate} - {post.postedTweetTime}
+            </span>
             {/* <div className="d-flex justify-content-end ">
               <Link to={`/post/${post.tweetId}/edit`} data-tip="Like Tweet" data-for="like" className="text-primary mr-2">
                 <i className="far fa-thumbs-up"></i>
