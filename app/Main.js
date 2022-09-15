@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
 import StateContext from "./StateContext";
 import DispatchContext from "./DispatchContext";
+import Axios from "axios";
 
 // My Components
 import Header from "./components/Header";
@@ -29,6 +30,10 @@ import DisplayLikes from "./components/DisplayLikes";
 import AfterRegister from "./components/AfterRegister";
 import Search from "./components/Search";
 import ForgotPassword from "./components/ForgotPassword";
+
+Axios.defaults.baseURL = "http://tweetapp-env.eba-vqdpzg7c.ap-southeast-2.elasticbeanstalk.com";
+//Axios.defaults.baseURL = "http://localhost:8081/";
+
 
 function Main() {
   const initialState = {

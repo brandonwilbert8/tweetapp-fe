@@ -45,7 +45,7 @@ function Search() {
 
       async function fetchResults() {
         try {
-          const response = await Axios.get(`http://localhost:8081/api/v1.0/tweets/user/search/${state.searchTerm}`, { cancelToken: ourRequest.token });
+          const response = await Axios.get(`/api/v1.0/tweets/user/search/${state.searchTerm}`, { cancelToken: ourRequest.token });
           console.log(response.data);
           setState((draft) => {
             draft.results = response.data;

@@ -17,7 +17,7 @@ function Profile() {
   useEffect(() => {
     async function fetchPosts() {
       try {
-        const response = await Axios.get(`http://localhost:8081/api/v1.0/tweets/${username}/`);
+        const response = await Axios.get(`/api/v1.0/tweets/${username}/`);
         setProfileData(response.data);
         console.log(response.data);
       } catch (e) {

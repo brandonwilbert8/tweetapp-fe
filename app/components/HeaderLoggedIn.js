@@ -18,6 +18,7 @@ function HeaderLoggedIn(props) {
     sessionStorage.clear();
 
     window.location.href = "/";
+    this.props.history.push("/");
     appState({ type: "logout" });
     window.history.forward();
     window.location.clear();

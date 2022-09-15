@@ -24,7 +24,7 @@ function DisplayReplies() {
 
     async function fetchPost() {
       try {
-        const response = await Axios.get(`http://localhost:8081/api/v1.0/tweets/${username}/${tweetId}`, { cancelToken: ourRequest.token });
+        const response = await Axios.get(`/api/v1.0/tweets/${username}/${tweetId}`, { cancelToken: ourRequest.token });
         setPost(response.data);
         setIsLoading(false);
         console.log(response.data);
@@ -71,7 +71,7 @@ function DisplayReplies() {
     const areYouSure = window.confirm("Do you really want to delete this tweet?");
     if (areYouSure) {
       try {
-        const response = await Axios.delete(`http://localhost:8081/api/v1.0/tweets/${username}/delete/${tweetId}`);
+        const response = await Axios.delete(`/api/v1.0/tweets/${username}/delete/${tweetId}`);
         if (response.data) {
           // 1. display a flash message
           appDispatch({ type: "flashMessage", value: "Post was successfully deleted" });
@@ -86,7 +86,7 @@ function DisplayReplies() {
 
   async function likeHandler() {
     try {
-      const response = await Axios.put(`http://localhost:8081/api/v1.0/tweets/${currentUser}/like/${tweetId}`);
+      const response = await Axios.put(`/api/v1.0/tweets/${currentUser}/like/${tweetId}`);
       if (response.data) {
         // 1. display a flash message
         appDispatch({ type: "flashMessage", value: "Liked a tweet" });
@@ -99,7 +99,7 @@ function DisplayReplies() {
 
   async function unlikeHandler() {
     try {
-      const response = await Axios.put(`http://localhost:8081/api/v1.0/tweets/${currentUser}/unlike/${tweetId}`);
+      const response = await Axios.put(`/api/v1.0/tweets/${currentUser}/unlike/${tweetId}`);
       if (response.data) {
         // 1. display a flash message
         appDispatch({ type: "flashMessage", value: "Unliked a tweet" });
@@ -137,7 +137,7 @@ function DisplayReplies() {
               color: "green",
             }}
           >
-            {element.postedReplyDate} - 
+            {element.postedReplyDate} -
           </td>
           <td
             style={{
@@ -149,14 +149,16 @@ function DisplayReplies() {
           </td>
           {element.tag ? (
             <td
-            style={{
-              fontStyle: "italic",
-              color: "purple",
-            }}
-          >
-            #{element.tag}
-          </td>
-          ) : ("")}
+              style={{
+                fontStyle: "italic",
+                color: "purple",
+              }}
+            >
+              #{element.tag}
+            </td>
+          ) : (
+            ""
+          )}
         </tr>
       );
     });
@@ -219,7 +221,7 @@ function DisplayReplies() {
         <ReactMarkdown children={post.tweet} allowedElements={["p", "br", "strong", "em", "h1", "h2", "h3", "h4", "h5", "h6", "ul", "ol", "li"]} />
       </div>
 
-      <div className = "text-muted small">
+      <div className="text-muted small">
         Posted on: {post.postedTweetDate} - {post.postedTweetTime}
       </div>
 

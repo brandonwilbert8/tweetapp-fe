@@ -78,7 +78,7 @@ function EditPost() {
 
     async function fetchPost() {
       try {
-        const response = await Axios.get(`http://localhost:8081/api/v1.0/tweets/${username}/${tweetId}`, { cancelToken: ourRequest.token });
+        const response = await Axios.get(`/api/v1.0/tweets/${username}/${tweetId}`, { cancelToken: ourRequest.token });
         if (response.data) {
           dispatch({ type: "fetchComplete", value: response.data });
           if (appState.user.username !== localStorage.getItem("tweetappUsername")) {
@@ -110,7 +110,7 @@ function EditPost() {
         try {
           console.log(state);
           const response = await Axios.put(
-            `http://localhost:8081/api/v1.0/tweets/${username}/update/${tweetId}`,
+            `/api/v1.0/tweets/${username}/update/${tweetId}`,
             {
               tweet: state.tweet.value,
             },

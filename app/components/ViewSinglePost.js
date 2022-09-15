@@ -24,7 +24,7 @@ function ViewSinglePost() {
 
     async function fetchPost() {
       try {
-        const response = await Axios.get(`http://localhost:8081/api/v1.0/tweets/${username}/${tweetId}`, { cancelToken: ourRequest.token });
+        const response = await Axios.get(`/api/v1.0/tweets/${username}/${tweetId}`, { cancelToken: ourRequest.token });
         setPost(response.data);
         setIsLoading(false);
         console.log(response.data);
@@ -71,7 +71,7 @@ function ViewSinglePost() {
     const areYouSure = window.confirm("Do you really want to delete this tweet?");
     if (areYouSure) {
       try {
-        const response = await Axios.delete(`http://localhost:8081/api/v1.0/tweets/${username}/delete/${tweetId}`);
+        const response = await Axios.delete(`/api/v1.0/tweets/${username}/delete/${tweetId}`);
         if (response.data) {
           // 1. display a flash message
           appDispatch({ type: "flashMessage", value: "Post was successfully deleted" });
@@ -88,7 +88,7 @@ function ViewSinglePost() {
 
   async function likeHandler() {
     try {
-      const response = await Axios.put(`http://localhost:8081/api/v1.0/tweets/${currentUser}/like/${tweetId}`);
+      const response = await Axios.put(`/api/v1.0/tweets/${currentUser}/like/${tweetId}`);
       if (response.data) {
         // 1. display a flash message
         appDispatch({ type: "flashMessage", value: "Liked a tweet" });
@@ -101,7 +101,7 @@ function ViewSinglePost() {
 
   async function unlikeHandler() {
     try {
-      const response = await Axios.put(`http://localhost:8081/api/v1.0/tweets/${currentUser}/unlike/${tweetId}`);
+      const response = await Axios.put(`/api/v1.0/tweets/${currentUser}/unlike/${tweetId}`);
       if (response.data) {
         // 1. display a flash message
         appDispatch({ type: "flashMessage", value: "Unliked a tweet" });

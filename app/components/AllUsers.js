@@ -16,7 +16,7 @@ function AllUsers(props) {
   useEffect(() => {
     async function fetchUsers() {
       try {
-        const response = await Axios.get(`http://localhost:8081/api/v1.0/tweets/users/all/`);
+        const response = await Axios.get(`/api/v1.0/tweets/users/all/`);
         setUsers(response.data);
         console.log(response.data);
         setIsLoading(false);

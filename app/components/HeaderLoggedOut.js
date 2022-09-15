@@ -13,7 +13,7 @@ function HeaderLoggedOut(props) {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      const response = await Axios.post("http://localhost:8081/api/v1.0/tweets/login", { username, password });
+      const response = await Axios.post("/api/v1.0/tweets/login", { username, password });
       if (response.data) {
         console.log("Authentication: " + response.data.status);
         console.log(response.data.message);

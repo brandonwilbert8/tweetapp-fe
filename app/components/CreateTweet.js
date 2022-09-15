@@ -14,7 +14,8 @@ function CreateTweet(props) {
   const appDispatch = useContext(DispatchContext);
   const appState = useContext(StateContext);
 
-  let x = Math.floor(Math.random() * 20000 + 1);
+  //let x = Math.floor(Math.random() * 20000 + 1);
+  //let x = new Date().getTime();
   var showDate = new Date();
   const postedDate = showDate.getDate() + "/" + showDate.getMonth() + "/" + showDate.getFullYear();
   const postedTime = showDate.getHours() + ":" + showDate.getMinutes();
@@ -99,9 +100,9 @@ function CreateTweet(props) {
       async function postTweet() {
         try {
           const response = await Axios.post(
-            `http://localhost:8081/api/v1.0/tweets/${username}/add`,
+            `/api/v1.0/tweets/${username}/add`,
             {
-              tweetId: x,
+              //tweetId: x,
               tweet: state.tweet.value,
               username: username,
               tag: state.tweetTag.value,
