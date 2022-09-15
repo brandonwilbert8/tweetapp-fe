@@ -31,8 +31,8 @@ import AfterRegister from "./components/AfterRegister";
 import Search from "./components/Search";
 import ForgotPassword from "./components/ForgotPassword";
 
-//Axios.defaults.baseURL = "http://tweetapp-env.eba-vqdpzg7c.ap-southeast-2.elasticbeanstalk.com";
-Axios.defaults.baseURL = "http://localhost:8081/";
+Axios.defaults.baseURL = "http://tweetapp-env.eba-vqdpzg7c.ap-southeast-2.elasticbeanstalk.com";
+//Axios.defaults.baseURL = "http://localhost:8081/";
 
 
 function Main() {
