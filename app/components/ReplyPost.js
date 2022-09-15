@@ -22,7 +22,7 @@ function ReplyPost() {
   const appDispatch = useContext(DispatchContext);
   const currentUser = localStorage.getItem("tweetappUsername");
 
-  let replyTweetId = Math.floor(Math.random() * 10000 + 1);
+  //let replyTweetId = Math.floor(Math.random() * 10000 + 1);
   var showDate = new Date();
   const postedDate = showDate.getDate() + "/" + showDate.getMonth() + "/" + showDate.getFullYear();
   const postedTime = showDate.getHours() + ":" + showDate.getMinutes();
@@ -168,7 +168,7 @@ function ReplyPost() {
         try {
           const response = await Axios.post(`/api/v1.0/tweets/${username}/reply/${tweetId}`, {
             tweetId: tweetId,
-            replyTweetId: replyTweetId,
+            // replyTweetId: replyTweetId,
             replyTweet: state.reply.value,
             username: currentUser,
             tag: state.replyTag.value,
