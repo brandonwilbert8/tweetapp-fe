@@ -1,10 +1,10 @@
-# TweetApp_FrontEnd
+# TweetApp Frontend 🐤
 
-## Description
+## Description 📝
 
 MC2 Frontend - React JS for FSE1 Accreditation
 
-## Getting Started
+## Getting Started 🏁
 
 ### Dependencies
 
@@ -19,11 +19,11 @@ npm run dev
 * Make sure that Spring Boot Application is running for the backend part
 * React will run on localhost:3001 as configured
 
-## Author
+## Author 🙋‍♂️
 
 * Brandon Wilbert [brandon.wilbert@cognizant.com]
 
-## Version History
+## Version History 📚
 
 * 0.2
     * Various bug fixes and optimizations
